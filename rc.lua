@@ -1,21 +1,22 @@
---[[
 
-     Awesome WM configuration template
-     https://github.com/awesomeWM
+--  ________ _______
+-- |   ___  \ ____  \
+-- |  |   \  \    \  \
+-- |  |    |  |    |  |
+-- |  |___/  /____/  /    Prabesh Maharjan
+-- |   _____/_____  /     https://github.com/Prabesh9
+-- |  |           \  \
+-- |  |            |  |
+-- |  |     ______/  /
+-- |__|    /________/
 
-     Freedesktop : https://github.com/lcpz/awesome-freedesktop
-
-     Copycats themes : https://github.com/lcpz/awesome-copycats
-
-     lain : https://github.com/lcpz/lain
-
---]]
-
+-- ==========================================================
+-- awesomewm config file (customized)
+--
 -- {{{ Required libraries
 local awesome, client, mouse, screen, tag = awesome, client, mouse, screen, tag
 local ipairs, string, os, table, tostring, tonumber, type = ipairs, string, os, table, tostring, tonumber, type
 
---https://awesomewm.org/doc/api/documentation/05-awesomerc.md.html
 -- Standard awesome library
 local gears         = require("gears") --Utilities such as color parsing and objects
 local awful         = require("awful") --Everything related to window managment
