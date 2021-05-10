@@ -21,11 +21,11 @@ function send_notification {
 #bar=$(seq -s "─" $(($volume/5)) | sed 's/[0-9]//g')
 if [ "$volume" = "0" ]; then
     icon_name="/usr/share/icons/Papirus-Dark/24x24@2x/panel/audio-volume-muted.svg"
-    notify-send "$volume""      " -i "$icon_name" -t 2000 -h int:value:"$volume" -h string:synchronous:"─"
+    notify-send "$volume""      " -i "$icon_name" -t 200 -h int:value:"$volume" -h string:synchronous:"─"
 else
     if [  "$volume" -lt "10" ]; then
         icon_name="/usr/share/icons/Papirus-Dark/24x24@2x/panel/audio-volume-off.svg"
-        notify-send "$volume""     " -i "$icon_name" -t 2000
+        notify-send "$volume""     " -i "$icon_name" -t 200
     else
         if [ "$volume" -lt "30" ]; then
             icon_name="/usr/share/icons/Papirus-Dark/24x24@2x/panel/audio-volume-low.svg"
@@ -40,7 +40,7 @@ else
 fi
 bar=$(seq -s "─" $(($volume/5)) | sed 's/[0-9]//g')
 # Send the notification
-notify-send "$volume""     ""$bar" -i "$icon_name" -t 2000 -h int:value:"$volume" -h string:synchronous:"$bar"
+notify-send "$volume""     ""$bar" -i "$icon_name" -t 200 -h int:value:"$volume" -h string:synchronous:"$bar"
 
 }
 
@@ -62,7 +62,7 @@ case $1 in
 	amixer -D pulse set Master 1+ toggle > /dev/null
 	if is_mute ; then
         DIR=`dirname "$0"`
-        notify-send -i "/usr/share/icons/Papirus-Dark/24x24@2x/panel/audio-volume-muted.svg" -u normal "Mute" -t 2000
+        notify-send -i "/usr/share/icons/Papirus-Dark/24x24@2x/panel/audio-volume-muted.svg" -u normal "Mute" -t 200
 	else
 	    send_notification
 	fi
