@@ -1,3 +1,4 @@
+---@diagnostic disable: lowercase-global, unused-local
 --[[
 
      Holo Awesome WM theme 3.0
@@ -19,7 +20,7 @@ theme.default_dir                               = require("awful.util").get_them
 theme.icon_dir                                  = os.getenv("HOME") .. "/.config/awesome/themes/holo/icons"
 --theme.wallpaper                                 = os.getenv("HOME") .. "/.config/awesome/themes/holo/wall.png"
 theme.font                                      = "Ubuntu Mono Regular 9"
-theme.taglist_font                              = "Ubuntu Mono Bold 7"
+theme.taglist_font                              = "Ubuntu Mono Bold 11"
 theme.fg_normal                                 = "#FFFFFF"
 theme.fg_focus                                  = "#0099CC"
 theme.bg_focus                                  = "#303030"
@@ -65,7 +66,7 @@ theme.layout_max                                = theme.icon_dir .. "/max.png"
 --theme.layout_floating                           = theme.icon_dir .. "/floating.png"
 theme.tasklist_plain_task_name                  = true
 theme.tasklist_disable_icon                     = true
-theme.useless_gap                               = dpi(4)
+theme.useless_gap                               = dpi(2)
 
 theme.musicplr = string.format("%s -e ncmpcpp", awful.util.terminal)
 
@@ -152,7 +153,7 @@ local barcolor  = gears.color({
     type  = "linear",
     from  = { dpi(32), 0 },
     to    = { dpi(32), dpi(32) },
-    stops = { {0, theme.bg_focus}, {0.25, "#505050"}, {1, theme.bg_focus} }
+    stops = { {0, theme.bg_normal}, {0.25, theme.bg_focus}, {1, theme.bg_focus} }
 })
 
 function theme.at_screen_connect(s)
@@ -174,22 +175,22 @@ function theme.at_screen_connect(s)
                            awful.button({}, 4, function () awful.layout.inc( 1) end),
                            awful.button({}, 5, function () awful.layout.inc(-1) end)))
     -- Create a taglist widget
-    s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons, { bg_focus = barcolor })
+    s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons, {bg_focus = theme.bg_normal} )
 
-    mytaglistcont = wibox.container.background(s.mytaglist, theme.bg_focus, gears.shape.rectangle)
-    s.mytag = wibox.container.margin(mytaglistcont, dpi(0), dpi(0), dpi(3), dpi(3))
+    mytaglistcont = wibox.container.background(s.mytaglist, theme.bg_normal, gears.shape.rectangle)
+    s.mytag = wibox.container.margin(mytaglistcont, dpi(0), dpi(0), dpi(0), dpi(0))
 
     -- Create a tasklist widget
     s.mytasklist = awful.widget.tasklist{
-        screen = s, 
-        filter = awful.widget.tasklist.filter.currenttags, 
-        buttons = awful.util.tasklist_buttons, 
-        style = { 
-            bg_focus = theme.bg_focus, 
-            shape = gears.shape.rectangle, 
-            shape_border_width = 3, 
-            shape_border_color = theme.bg_normal, 
-            align = "center" 
+        screen = s,
+        filter = awful.widget.tasklist.filter.currenttags,
+        buttons = awful.util.tasklist_buttons,
+        style = {
+            bg_focus = theme.bg_focus,
+            shape = gears.shape.rectangle,
+            shape_border_width = 3,
+            shape_border_color = theme.bg_normal,
+            align = "center"
         },
     }
 
