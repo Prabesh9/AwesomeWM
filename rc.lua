@@ -323,11 +323,13 @@ globalkeys = my_table.join(
 
     -- super + ...
     awful.key({ modkey }, "v", function () awful.util.spawn( "pavucontrol" ) end,
-        {description = "pulseaudio control", group = "super"}),
-    awful.key({ modkey }, "0",  function () awful.util.spawn( "oblogout" ) end,
-      {description = "exit", group = "hotkeys"}),
+    {description = "pulseaudio control", group = "super"}),
+    awful.key({ modkey }, "9",  function () awful.spawn.with_shell("~/.config/dmenu/e-samparka-projects.sh") end,
+    {description = "exit", group = "hotkeys"}),
+    awful.key({ modkey }, "0",  function () awful.spawn.with_shell("~/.config/dmenu/dmenu-script-exit.sh") end,
+    {description = "exit", group = "hotkeys"}),
     awful.key({ modkey }, "Escape", function () awful.util.spawn( "xkill" ) end,
-        {description = "Kill proces", group = "hotkeys"}),
+    {description = "Kill proces", group = "hotkeys"}),
 
     -- super + shift + ...
     awful.key({ modkey, "Shift"   }, "Return", function() awful.util.spawn( terminal ) end),
@@ -566,7 +568,7 @@ globalkeys = my_table.join(
 
     -- Default
 
-    awful.key({ altkey }, "x",
+    awful.key({ modkey }, "x",
     function ()
         awful.prompt.run {
             prompt       = "Run Lua code: ",
@@ -575,7 +577,7 @@ globalkeys = my_table.join(
             history_path = awful.util.get_cache_dir() .. "/history_eval"
         }
     end,
-    {description = "lua execute prompt", group = "awesome"})
+        {description = "lua execute prompt", group = "awesome"})
     )
 
 clientkeys = my_table.join(
@@ -754,12 +756,15 @@ awful.rules.rules = {
     { rule = { class = "Xfce4-settings-manager" },
           properties = { floating = false } },
 
+    { rule = { class = "Pavucontrol" },
+    properties = { floating = true, height = 400, width = 800, x = 275, y = 175} },
     { rule = { class = "Brave" },  properties = { tag = tagnames[1], switchtotag = true } },
     { rule  = { class = "Alacritty" },  properties = { tag = tagnames[2], switchtotag = true } },
     { rule  = { class = "Viber" },  properties = { tag = tagnames[3], switchtotag = true } },
     { rule  = { class = "whatsapp-nativefier-d40211" },  properties = { tag = tagnames[3], switchtotag = true } },
     { rule  = { class = "Spotify" },  properties = { tag = tagnames[4], switchtotag = true } },
     { rule  = { class = "vlc" },  properties = { tag = tagnames[4], switchtotag = true } },
+    { rule  = { class = "mpv" },  properties = { tag = tagnames[4], fullscreen = true, switchtotag = true } },
     { rule  = { class = "DBeaver" },  properties = { tag = tagnames[5], switchtotag = true } },
     { rule  = { class = "Postman" },  properties = { tag = tagnames[5], switchtotag = true } },
     { rule  = { class = "Deluge" },  properties = { tag = tagnames[5], switchtotag = true } },
