@@ -119,8 +119,8 @@ local editorgui         = "code"
 local filemanager       = "thunar"
 local mediaplayer       = "spotify"
 local terminal          = "alacritty"
---local tagnames    = {"WEB", "EDITOR", "CHAT", "A/V", "OTHERS"}
-local tagnames    = {"", "", "", "", ""}
+local tagnames    = {"WEB", "EDITOR", "CHAT", "A/V", "OTHERS"}
+-- local tagnames    = {"", "", "", "", ""}
 
 -- awesome variables
 awful.util.terminal = terminal
@@ -324,10 +324,14 @@ globalkeys = my_table.join(
     -- super + ...
     awful.key({ modkey }, "v", function () awful.util.spawn( "pavucontrol" ) end,
     {description = "pulseaudio control", group = "super"}),
+    awful.key({ modkey }, "c",  function () awful.spawn.with_shell("~/.config/dmenu/configs.sh") end,
+    {description = "Edit Config", group = "hotkeys"}),
+    awful.key({ modkey }, "8",  function () awful.spawn("passmenu --type") end,
+    {description = "Password", group = "hotkeys"}),
     awful.key({ modkey }, "9",  function () awful.spawn.with_shell("~/.config/dmenu/e-samparka-projects.sh") end,
-    {description = "exit", group = "hotkeys"}),
-    awful.key({ modkey }, "0",  function () awful.spawn.with_shell("~/.config/dmenu/dmenu-script-exit.sh") end,
-    {description = "exit", group = "hotkeys"}),
+    {description = "Project", group = "hotkeys"}),
+    awful.key({ modkey }, "0",  function () awful.util.spawn("arcolinux-logout") end,
+    {description = "Exit", group = "hotkeys"}),
     awful.key({ modkey }, "Escape", function () awful.util.spawn( "xkill" ) end,
     {description = "Kill proces", group = "hotkeys"}),
 
