@@ -113,12 +113,12 @@ local modkey1      = "Control"
 
 -- personal variables
 --change these variables if you want
-local browser          = "brave"
+local browser          = "firefox"
 local editor            = os.getenv("EDITOR") or "nvim"
 local editorgui         = "code"
 local filemanager       = "thunar"
 local mediaplayer       = "spotify"
-local terminal          = "alacritty"
+local terminal          = "st"
 local tagnames    = {"WEB", "EDITOR", "CHAT", "A/V", "OTHERS"}
 -- local tagnames    = {"", "", "", "", ""}
 
@@ -337,9 +337,9 @@ globalkeys = my_table.join(
 
     -- super + shift + ...
     awful.key({ modkey, "Shift"   }, "Return", function() awful.util.spawn( terminal ) end),
-    awful.key({ modkey, "Shift"   }, "q", function() awful.util.spawn( "alacritty -e ranger" ) end),
-    awful.key({ modkey, "Shift"   }, "w", function() awful.util.spawn( "alacritty -e htop" ) end),
-    awful.key({ modkey, "Shift"   }, "e", function() awful.util.spawn( "alacritty -e " .. editor ) end),
+    awful.key({ modkey, "Shift"   }, "q", function() awful.util.spawn( terminal .. " -e ranger" ) end),
+    awful.key({ modkey, "Shift"   }, "w", function() awful.util.spawn( terminal .. " -e htop" ) end),
+    awful.key({ modkey, "Shift"   }, "e", function() awful.util.spawn( terminal .. " -e " .. editor ) end),
 
 
     -- ctrl + shift + ...
@@ -762,8 +762,8 @@ awful.rules.rules = {
 
     { rule = { class = "Pavucontrol" },
     properties = { floating = true, height = 400, width = 800, x = 275, y = 175} },
-    { rule = { class = "Brave" },  properties = { tag = tagnames[1], switchtotag = true } },
-    { rule  = { class = "Alacritty" },  properties = { tag = tagnames[2], switchtotag = true } },
+    { rule = { class = "firefox" },  properties = { tag = tagnames[1], switchtotag = true } },
+    { rule  = { class = "St" },  properties = { tag = tagnames[2], switchtotag = true } },
     { rule  = { class = "Viber" },  properties = { tag = tagnames[3], switchtotag = true } },
     { rule  = { class = "whatsapp-nativefier-d40211" },  properties = { tag = tagnames[3], switchtotag = true } },
     { rule  = { class = "Spotify" },  properties = { tag = tagnames[4], switchtotag = true } },
