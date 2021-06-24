@@ -41,6 +41,7 @@ local dpi           = require("beautiful.xresources").apply_dpi
 -- }}}
 
 
+local dmenu_conf = "~/.config/dmenu/";
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -324,13 +325,13 @@ globalkeys = my_table.join(
     -- super + ...
     awful.key({ modkey }, "v", function () awful.util.spawn( "pavucontrol" ) end,
     {description = "pulseaudio control", group = "super"}),
-    awful.key({ modkey }, "c",  function () awful.spawn.with_shell("~/.config/dmenu/configs.sh") end,
+    awful.key({ modkey }, "c",  function () awful.spawn.with_shell(dmenu_conf .. "configs.sh") end,
     {description = "Edit Config", group = "hotkeys"}),
     awful.key({ modkey }, "8",  function () awful.spawn("passmenu --type") end,
     {description = "Password", group = "hotkeys"}),
-    awful.key({ modkey }, "9",  function () awful.spawn.with_shell("~/.config/dmenu/e-samparka-projects.sh") end,
+    awful.key({ modkey }, "9",  function () awful.spawn.with_shell(dmenu_conf .. "e-samparka-projects.sh") end,
     {description = "Project", group = "hotkeys"}),
-    awful.key({ modkey }, "0",  function () awful.util.spawn("arcolinux-logout") end,
+    awful.key({ modkey }, "0",  function () awful.spawn.with_shell(dmenu_conf .. "dm-logout.sh") end,
     {description = "Exit", group = "hotkeys"}),
     awful.key({ modkey }, "Escape", function () awful.util.spawn( "xkill" ) end,
     {description = "Kill proces", group = "hotkeys"}),
