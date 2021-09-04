@@ -137,7 +137,7 @@ awful.layout.suit.tile.left.mirror = true
 awful.layout.layouts = {
     awful.layout.suit.tile,
     awful.layout.suit.max,
-    --awful.layout.suit.floating,
+    awful.layout.suit.floating,
     --awful.layout.suit.tile.left,
     --awful.layout.suit.tile.bottom,
     --awful.layout.suit.tile.top,
@@ -327,8 +327,6 @@ globalkeys = my_table.join(
     {description = "pulseaudio control", group = "super"}),
     awful.key({ modkey }, "c",  function () awful.spawn.with_shell(dmenu_conf .. "configs.sh") end,
     {description = "Edit Config", group = "hotkeys"}),
-    awful.key({ modkey }, "8",  function () awful.spawn("passmenu --type") end,
-    {description = "Password", group = "hotkeys"}),
     awful.key({ modkey }, "9",  function () awful.spawn.with_shell(dmenu_conf .. "e-samparka-projects.sh") end,
     {description = "Project", group = "hotkeys"}),
     awful.key({ modkey }, "0",  function () awful.spawn.with_shell(dmenu_conf .. "dm-logout.sh") end,
@@ -338,6 +336,7 @@ globalkeys = my_table.join(
 
     -- super + shift + ...
     awful.key({ modkey, "Shift"   }, "Return", function() awful.util.spawn( terminal ) end),
+    awful.key({ modkey, "Shift"   }, "p",  function () awful.spawn("passmenu --type -p 'Select Password: '") end),
     awful.key({ modkey, "Shift"   }, "q", function() awful.util.spawn( terminal .. " -e ranger" ) end),
     awful.key({ modkey, "Shift"   }, "w", function() awful.util.spawn( terminal .. " -e htop" ) end),
     awful.key({ modkey, "Shift"   }, "e", function() awful.util.spawn( terminal .. " -e " .. editor ) end),
@@ -762,14 +761,16 @@ awful.rules.rules = {
           properties = { floating = false } },
 
     { rule = { class = "Pavucontrol" },
-    properties = { floating = true, height = 400, width = 800, x = 275, y = 175} },
-    { rule = { class = "firefox" },  properties = { tag = tagnames[1], switchtotag = true } },
+        properties = { floating = true, height = 400, width = 800, x = 275, y = 175}
+    },
+    { rule  = { class = "firefox" },  properties = { tag = tagnames[1], maximized = true, switchtotag = true } },
     { rule  = { class = "St" },  properties = { tag = tagnames[2], switchtotag = true } },
     { rule  = { class = "Viber" },  properties = { tag = tagnames[3], switchtotag = true } },
     { rule  = { class = "whatsapp-nativefier-d40211" },  properties = { tag = tagnames[3], switchtotag = true } },
     { rule  = { class = "Spotify" },  properties = { tag = tagnames[4], switchtotag = true } },
     { rule  = { class = "vlc" },  properties = { tag = tagnames[4], switchtotag = true } },
     { rule  = { class = "mpv" },  properties = { tag = tagnames[4], fullscreen = true, switchtotag = true } },
+    { rule  = { class = "Brave" },  properties = { tag = tagnames[4], maximized = true, switchtotag = true } },
     { rule  = { class = "DBeaver" },  properties = { tag = tagnames[5], switchtotag = true } },
     { rule  = { class = "Postman" },  properties = { tag = tagnames[5], switchtotag = true } },
     { rule  = { class = "Deluge" },  properties = { tag = tagnames[5], switchtotag = true } },
