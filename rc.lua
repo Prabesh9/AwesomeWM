@@ -99,10 +99,12 @@ local themes = {
     "powerarrow-blue",	 	-- 3
     "blackburn",		-- 4
     "holo",		-- 5
+    "vertex",		-- 6
+    "copland",		-- 7
 }
 
 -- choose your theme here
-local chosen_theme = themes[5]
+local chosen_theme = themes[7]
 
 local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), chosen_theme)
 beautiful.init(theme_path)
@@ -119,7 +121,7 @@ local editor            = os.getenv("EDITOR") or "nvim"
 local editorgui         = "code"
 local filemanager       = "thunar"
 local mediaplayer       = "spotify"
-local terminal          = "st"
+local terminal          = "kitty"
 local tagnames    = {"WEB", "EDITOR", "CHAT", "A/V", "OTHERS"}
 -- local tagnames    = {"", "", "", "", ""}
 
@@ -765,6 +767,7 @@ awful.rules.rules = {
     },
     { rule  = { class = "firefox" },  properties = { tag = tagnames[1], maximized = true, switchtotag = true } },
     { rule  = { class = "St" },  properties = { tag = tagnames[2], switchtotag = true } },
+    { rule  = { class = "kitty" },  properties = { tag = tagnames[2], switchtotag = true,  fullscreen = true } },
     { rule  = { class = "Viber" },  properties = { tag = tagnames[3], switchtotag = true } },
     { rule  = { class = "whatsapp-nativefier-d40211" },  properties = { tag = tagnames[3], switchtotag = true } },
     { rule  = { class = "Spotify" },  properties = { tag = tagnames[4], switchtotag = true } },
