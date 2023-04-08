@@ -1,24 +1,34 @@
 ---@diagnostic disable: lowercase-global, unused-local
---[[
-
-     Holo Awesome WM theme 3.0
-     github.com/lcpz
-
---]]
-
+--  _____ ____
+-- |  __ \___ \
+-- | |__) |__) |   Prabesh Maharjan
+-- |  ___/|__ <    https://github.com/Prabesh9
+-- | |    ___) |
+-- |_|   |____/
+--
+-- ==========================================================
+-- Holo Awesome WM theme 3.0 (Customized)
+-- github.com/lcpz
+--
+--
 local gears = require("gears")
 local lain  = require("lain")
 local awful = require("awful")
 local wibox = require("wibox")
 local dpi   = require("beautiful.xresources").apply_dpi
 
+-- Widgets
+local docker_widget = require("awesome-wm-widgets.docker-widget.docker")
+local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
+local calendar_widget = require("awesome-wm-widgets.calendar-widget.calendar")
+local spotify_widget = require("awesome-wm-widgets.spotify-widget.spotify")
+
 local string, os = string, os
-local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
+local my_table = awful.util.table or gears.table
 
 local theme                                     = {}
 theme.default_dir                               = require("awful.util").get_themes_dir() .. "default"
 theme.icon_dir                                  = os.getenv("HOME") .. "/.config/awesome/themes/holo/icons"
---theme.wallpaper                                 = os.getenv("HOME") .. "/.config/awesome/themes/holo/wall.png"
 theme.font                                      = "Ubuntu Mono Regular 9"
 theme.taglist_font                              = "Ubuntu Mono Bold 8"
 theme.fg_normal                                 = "#FFFFFF"
@@ -54,16 +64,7 @@ theme.net_up                                    = theme.icon_dir .. "/net_up.png
 theme.net_down                                  = theme.icon_dir .. "/net_down.png"
 theme.layout_tile                               = theme.icon_dir .. "/tile.png"
 theme.layout_max                                = theme.icon_dir .. "/max.png"
---theme.layout_tileleft                           = theme.icon_dir .. "/tileleft.png"
---theme.layout_tilebottom                         = theme.icon_dir .. "/tilebottom.png"
---theme.layout_tiletop                            = theme.icon_dir .. "/tiletop.png"
---theme.layout_fairv                              = theme.icon_dir .. "/fairv.png"
---theme.layout_fairh                              = theme.icon_dir .. "/fairh.png"
---theme.layout_spiral                             = theme.icon_dir .. "/spiral.png"
---theme.layout_dwindle                            = theme.icon_dir .. "/dwindle.png"
---theme.layout_fullscreen                         = theme.icon_dir .. "/fullscreen.png"
---theme.layout_magnifier                          = theme.icon_dir .. "/magnifier.png"
---theme.layout_floating                           = theme.icon_dir .. "/floating.png"
+theme.layout_floating                           = theme.icon_dir .. "/floating.png"
 theme.tasklist_plain_task_name                  = true
 theme.tasklist_disable_icon                     = true
 theme.useless_gap                               = dpi(2)
@@ -86,52 +87,48 @@ local mytextcalendar = wibox.widget.textclock(markup.fontfg(theme.font, "#FFFFFF
 local calendar_icon = wibox.widget.imagebox(theme.calendar)
 local calbg = wibox.container.background(mytextcalendar, theme.bg_focus, gears.shape.rectangle)
 local calendarwidget = wibox.container.margin(calbg, dpi(0), dpi(0), dpi(3), dpi(3))
-theme.cal = lain.widget.cal({
-    attach_to = { mytextclock, mytextcalendar },
-    notification_preset = {
-        fg = "#FFFFFF",
-        bg = theme.bg_normal,
-        position = "bottom_right",
-        font = "Monospace 10"
-    }
+
+local cw = calendar_widget({
+  placement = 'top_right',
+  start_sunday = true,
+  radius = 8,
+  previous_month_button = 1,
+  next_month_button = 3,
 })
+calendarwidget:connect_signal("button::press",
+  function(_, _, _, button)
+    if button == 1 then cw.toggle() end
+  end)
+clockwidget:connect_signal("button::press",
+  function(_, _, _, button)
+    if button == 1 then cw.toggle() end
+  end)
+
+-- Docker
+local dockerbg = wibox.container.background(docker_widget(), theme.bg_focus, gears.shape.rectangle)
+local dockerwidget = wibox.container.margin(dockerbg, dpi(0), dpi(0), dpi(3), dpi(3))
+
+-- Spotify
+local spotifybg = wibox.container.background(spotify_widget({
+  font = 'Ubuntu Mono 9',
+  play_icon = '/usr/share/icons/Papirus-Light/24x24/categories/spotify.svg',
+  pause_icon = '/usr/share/icons/Papirus-Dark/24x24/panel/spotify-indicator.svg',
+  dim_when_paused = true,
+  dim_opacity = 0.5,
+  max_length = -1,
+  show_tooltip = false
+}), theme.bg_focus, gears.shape.rectangle)
+local spotifywidget = wibox.container.margin(spotifybg, dpi(0), dpi(0), dpi(3), dpi(3))
 
 -- Battery
-local bat = lain.widget.bat({
-    settings = function()
-        bat_header = " Bat "
-        bat_p      = bat_now.perc .. " "
-        if bat_now.ac_status == 1 then
-            bat_p = bat_p .. "Plugged "
-        end
-        widget:set_markup(markup.font(theme.font, "Bat " .. bat_p))
-    end
-})
-local batbg = wibox.container.background(bat.widget, theme.bg_focus, gears.shape.rectangle)
-local batwidget = wibox.container.margin(batbg, dpi(0), dpi(0), dpi(3), dpi(3))
-
--- CPU
-local cpu_icon = wibox.widget.imagebox(theme.cpu)
-local cpu = lain.widget.cpu({
-    settings = function()
-        widget:set_markup(space3 .. markup.font(theme.font, "CPU " .. cpu_now.usage
-                          .. "% ") .. markup.font("Roboto 5", " "))
-    end
-})
-local cpubg = wibox.container.background(cpu.widget, theme.bg_focus, gears.shape.rectangle)
-local cpuwidget = wibox.container.margin(cpubg, dpi(0), dpi(0), dpi(3), dpi(3))
-
--- Net
-local netdown_icon = wibox.widget.imagebox(theme.net_down)
-local netup_icon = wibox.widget.imagebox(theme.net_up)
-local net = lain.widget.net({
-    settings = function()
-        widget:set_markup(markup.font("Roboto 1", " ") .. markup.font(theme.font, net_now.received .. " - "
-                          .. net_now.sent) .. markup.font("Roboto 2", " "))
-    end
-})
-local netbg = wibox.container.background(net.widget, theme.bg_focus, gears.shape.rectangle)
-local networkwidget = wibox.container.margin(netbg, dpi(0), dpi(0), dpi(3), dpi(3))
+local batterybg = wibox.container.background(batteryarc_widget({
+  font = theme.font,
+  arc_thickness = 1,
+  timeout = 3,
+  show_current_level = true,
+  main_color = theme.fg_normal
+}), theme.bg_focus, gears.shape.rectangle)
+local batterywidget = wibox.container.margin(batterybg, dpi(0), dpi(0), dpi(3), dpi(3))
 
 -- Launcher
 local mylauncher = awful.widget.button({ image = theme.awesome_icon_launcher })
@@ -150,98 +147,95 @@ local bottom_bar = wibox.widget.imagebox(theme.bottom_bar)
 local last = wibox.widget.textbox('<span font="Roboto 7"> </span>')
 
 local barcolor  = gears.color({
-    type  = "linear",
-    from  = { dpi(32), 0 },
-    to    = { dpi(32), dpi(32) },
-    stops = { {0, theme.bg_normal}, {0.25, theme.bg_focus}, {1, theme.bg_focus} }
+  type  = "linear",
+  from  = { dpi(32), 0 },
+  to    = { dpi(32), dpi(32) },
+  stops = { {0, theme.bg_normal}, {0.25, theme.bg_focus}, {1, theme.bg_focus} }
 })
 
 function theme.at_screen_connect(s)
-    -- Quake application
-    s.quake = lain.util.quake({ app = awful.util.terminal })
+  -- Quake application
+  s.quake = lain.util.quake({ app = awful.util.terminal })
 
-    -- Tags
-    awful.tag(awful.util.tagnames, s, awful.layout.layouts)
+  -- Tags
+  awful.tag(awful.util.tagnames, s, awful.layout.layouts)
 
-    -- Create a promptbox for each screen
-    s.mypromptbox = awful.widget.prompt()
-    -- Create an imagebox widget which will contains an icon indicating which layout we're using.
-    -- We need one layoutbox per screen.
-    s.mylayoutbox = awful.widget.layoutbox(s)
-    s.mylayoutbox:buttons(my_table.join(
-                           awful.button({}, 1, function () awful.layout.inc( 1) end),
-                           awful.button({}, 2, function () awful.layout.set( awful.layout.layouts[1] ) end),
-                           awful.button({}, 3, function () awful.layout.inc(-1) end),
-                           awful.button({}, 4, function () awful.layout.inc( 1) end),
-                           awful.button({}, 5, function () awful.layout.inc(-1) end)))
-    -- Create a taglist widget
-    s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons, {bg_focus = theme.bg_normal} )
+  -- Create a promptbox for each screen
+  s.mypromptbox = awful.widget.prompt()
+  -- Create an imagebox widget which will contains an icon indicating which layout we're using.
+  -- We need one layoutbox per screen.
+  s.mylayoutbox = awful.widget.layoutbox(s)
+  s.mylayoutbox:buttons(my_table.join(
+    awful.button({}, 1, function () awful.layout.inc( 1) end),
+    awful.button({}, 2, function () awful.layout.set( awful.layout.layouts[1] ) end),
+    awful.button({}, 3, function () awful.layout.inc(-1) end),
+    awful.button({}, 4, function () awful.layout.inc( 1) end),
+    awful.button({}, 5, function () awful.layout.inc(-1) end)))
+  -- Create a taglist widget
+  s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons, {bg_focus = theme.bg_normal} )
 
-    mytaglistcont = wibox.container.background(s.mytaglist, theme.bg_normal, gears.shape.rectangle)
-    s.mytag = wibox.container.margin(mytaglistcont, dpi(0), dpi(0), dpi(0), dpi(0))
+  mytaglistcont = wibox.container.background(s.mytaglist, theme.bg_normal, gears.shape.rectangle)
+  s.mytag = wibox.container.margin(mytaglistcont, dpi(0), dpi(0), dpi(0), dpi(0))
 
-    -- Create a tasklist widget
-    s.mytasklist = awful.widget.tasklist{
-        screen = s,
-        filter = awful.widget.tasklist.filter.currenttags,
-        buttons = awful.util.tasklist_buttons,
-        style = {
-            bg_focus = theme.bg_focus,
-            shape = gears.shape.rectangle,
-            shape_border_width = 3,
-            shape_border_color = theme.bg_normal,
-            align = "center"
-        },
-    }
+  -- Create a tasklist widget
+  s.mytasklist = awful.widget.tasklist{
+    screen = s,
+    filter = awful.widget.tasklist.filter.currenttags,
+    buttons = awful.util.tasklist_buttons,
+    style = {
+      bg_focus = theme.bg_focus,
+      shape = gears.shape.rectangle,
+      shape_border_width = 3,
+      shape_border_color = theme.bg_normal,
+      align = "center"
+    },
+  }
 
-    -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s, height = dpi(20) })
+  -- Create the wibox
+  s.mywibox = awful.wibar({ position = "top", screen = s, height = dpi(20) })
 
-    -- Add widgets to the wibox
-    s.mywibox:setup {
-        layout = wibox.layout.align.horizontal,
-        { -- Left widgets
-            layout = wibox.layout.fixed.horizontal,
-            first,
-            first,
-            mylauncherwidget,
-            first,
-            first,
-            first,
-            s.mytag,
-            bar,
-            s.mylayoutbox,
-            first,
-            s.mypromptbox,
-        },
-        --nil, -- Middle widget
-        {
-            layout = wibox.layout.fixed.horizontal,
-            first,
-            first,
-            s.mytasklist, -- Middle widget
-        },
-        { -- Right widgets
-            layout = wibox.layout.fixed.horizontal,
-            netdown_icon,
-            networkwidget,
-            netup_icon,
-            bar,
-            cpu_icon,
-            cpuwidget,
-            bar,
-            batwidget,
-            bar,
-            calendar_icon,
-            calendarwidget,
-            bar,
-            clock_icon,
-            clockwidget,
-            wibox.widget.systray(),
-            last,
-            last,
-        },
-    }
+  -- Add widgets to the wibox
+  s.mywibox:setup {
+    layout = wibox.layout.align.horizontal,
+    { -- Left widgets
+      layout = wibox.layout.fixed.horizontal,
+      first,
+      first,
+      mylauncherwidget,
+      first,
+      first,
+      first,
+      s.mytag,
+      bar,
+      s.mylayoutbox,
+      first,
+      s.mypromptbox,
+    },
+    { -- Middle widget
+      layout = wibox.layout.fixed.horizontal,
+      first,
+      first,
+      s.mytasklist, -- Middle widget
+    },
+    { -- Right widgets
+      layout = wibox.layout.fixed.horizontal,
+      bar,
+      spotifywidget,
+      bar,
+      dockerwidget,
+      bar,
+      batterywidget,
+      bar,
+      calendar_icon,
+      calendarwidget,
+      bar,
+      clock_icon,
+      clockwidget,
+      wibox.widget.systray(),
+      last,
+      last,
+    },
+  }
 
 end
 
